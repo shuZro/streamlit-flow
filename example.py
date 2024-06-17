@@ -20,4 +20,4 @@ edges = [StreamlitFlowEdge("1-2", "1", "2", animated=True),
         StreamlitFlowEdge("3-6", "3", "6", animated=True),
         StreamlitFlowEdge("3-7", "3", "7", animated=True)]
 
-streamlit_flow('example_flow', nodes, edges, layout=TreeLayout(direction='right'), fit_view=True)
+streamlit_flow('example_flow', nodes, edges, layout=TreeLayout(direction='right'), fit_view=True, snap_to_grid=True)

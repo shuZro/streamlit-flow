@@ -183,6 +183,7 @@ const ReactFlowComponent = (props) => {
     <div style={{height: props.args["height"]}}>
         <ReactFlow
                 ref={ref}
+                snapToGrid={props.args.snapToGrid}
                 nodes={nodes}
                 onNodesChange={onNodesChange}
                 edges={edges}
