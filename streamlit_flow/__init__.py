@@ -7,7 +7,7 @@ from typing import List
 from .elements import StreamlitFlowNode, StreamlitFlowEdge
 from .layouts import Layout, ManualLayout
 
-_RELEASE = True
+_RELEASE = False
 
 if not _RELEASE:
     _component_func = components.declare_component(
