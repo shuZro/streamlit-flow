@@ -2,3 +2,4 @@ node_modules
 dist
 *.egg-info
 __pycache__
+.idea
