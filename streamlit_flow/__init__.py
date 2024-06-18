@@ -38,7 +38,8 @@ def streamlit_flow(key:str,
                     enable_pane_menu:bool=False,
                     enable_node_menu:bool=False,
                     enable_edge_menu:bool=False,
-                    snap_to_grid:bool=False):
+                    snap_to_grid:bool=False,
+                    add_on_drop:bool=False):
     
     # assert direction in ["manual", "up", "down", "left", "right"], f"direction must be one of ['manual', 'up', 'down', 'left', 'right']. Got {direction}"
 
@@ -68,6 +69,7 @@ def streamlit_flow(key:str,
                                         enablePaneMenu=enable_pane_menu,
                                         enableEdgeMenu=enable_edge_menu,
                                         snapToGrid=snap_to_grid,
+                                        addOnDrop=add_on_drop,
                                         key=key)
     if component_value:
         return (component_value['selectedID'])

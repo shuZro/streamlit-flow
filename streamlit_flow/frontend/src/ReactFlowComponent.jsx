@@ -42,6 +42,11 @@ const ReactFlowComponent = (props) => {
     const reactFlowInstance = useReactFlow();
     const {fitView} = useReactFlow();
 
+    const connectingNodeId = useRef(null);
+    const { screenToFlowPosition } = useReactFlow();
+    let id = 1;
+    const getId = () => `${id++}`;
+
     useEffect(() => Streamlit.setFrameHeight());
 
     useEffect(() => {
@@ -141,6 +146,7 @@ const ReactFlowComponent = (props) => {
     }
 
     const onConnect = (params) => {
+        connectingNodeId.current = null;
         const newEdges = addEdge({...params, animated:props.args["animateNewEdges"], labelShowBg:false}, edges);
         handleDataReturnToStreamlit(null, nodes, newEdges);
         setEdges(newEdges);
@@ -178,17 +184,52 @@ const ReactFlowComponent = (props) => {
         setEdgeContextMenu(null);
     }
 
+    const onConnectStart = useCallback((_, { nodeId }) => {
+        connectingNodeId.current = nodeId;
+      }, []);
+
+    const onConnectEnd = useCallback(
+    (event) => {
+      if (!connectingNodeId.current || !props.args["addOnDrop"]) return;
+
+      const targetIsPane = event.target.classList.contains('react-flow__pane');
+
+      if (targetIsPane) {
+        const id = getId();
+        const newNode = {
+          id,
+          position: screenToFlowPosition({
+            x: event.clientX,
+            y: event.clientY,
+          }),
+          data: { label: `Node ${id}` },
+          origin: [0.5, 0.0],
+          sourcePosition: "right",
+          targetPosition: "left"
+        };
+
+        setNodes((nds) => nds.concat(newNode));
+        setEdges((eds) =>
+          eds.concat({ id, source: connectingNodeId.current, target: id }),
+        );
+
+      }
+    },
+    [screenToFlowPosition],
+    );
 
     return (
     <div style={{height: props.args["height"]}}>
         <ReactFlow
                 ref={ref}
-                snapToGrid={props.args.snapToGrid}
+                snapToGrid={props.args["snapToGrid"]}
                 nodes={nodes}
                 onNodesChange={onNodesChange}
                 edges={edges}
                 onEdgesChange={onEdgesChange}
                 onConnect={props.args.allowNewEdges ? onConnect: null}
+                onConnectStart={onConnectStart}
+                onConnectEnd={onConnectEnd}
                 fitView={props.args["fitView"]}
                 style={props.args["style"]}
                 onNodeClick={onNodeClick}
