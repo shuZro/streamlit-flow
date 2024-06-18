@@ -13,7 +13,6 @@ import ReactFlow, {
     addEdge,
     ReactFlowProvider,
     useReactFlow,
-    Panel
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -24,8 +23,7 @@ import './style.css';
 import PaneConextMenu from "./components/PaneContextMenu";
 import NodeContextMenu from "./components/NodeContextMenu";
 import EdgeContextMenu from "./components/EdgeContextMenu";
-
-import createElkGraphLayout from "./layouts/ElkLayout";
+import {nanoid} from "nanoid";
 
 const ReactFlowComponent = (props) => {
 
@@ -44,30 +42,8 @@ const ReactFlowComponent = (props) => {
 
     const connectingNodeId = useRef(null);
     const { screenToFlowPosition } = useReactFlow();
-    let id = 1;
-    const getId = () => `${id++}`;
 
     useEffect(() => Streamlit.setFrameHeight());
-
-    useEffect(() => {
-        createElkGraphLayout(nodes, edges, props.args["layoutOptions"])
-            .then(({nodes, edges}) => {
-                setNodes(nodes);
-                setEdges(edges);
-                setViewFitAfterLayout(false);
-            })
-            .catch(err => console.log(err));
-    }, []);
-
-    useEffect(() => {
-        createElkGraphLayout(nodes, edges, props.args["layoutOptions"])
-            .then(({nodes, edges}) => {
-                setNodes(nodes);
-                setEdges(edges);
-                setViewFitAfterLayout(false);
-            })
-            .catch(err => console.log(err));
-    }, [props.width])
 
     useEffect(() => {
         handleDataReturnToStreamlit(null, nodes, edges);
@@ -195,22 +171,25 @@ const ReactFlowComponent = (props) => {
       const targetIsPane = event.target.classList.contains('react-flow__pane');
 
       if (targetIsPane) {
-        const id = getId();
+        const id = nanoid();
         const newNode = {
           id,
           position: screenToFlowPosition({
             x: event.clientX,
             y: event.clientY,
           }),
-          data: { label: `Node ${id}` },
+          data: { label: `Task` },
           origin: [0.5, 0.0],
           sourcePosition: "right",
-          targetPosition: "left"
+          targetPosition: "left",
+            deletable: true,
+            selectable: true,
+            connectable: true
         };
 
         setNodes((nds) => nds.concat(newNode));
         setEdges((eds) =>
-          eds.concat({ id, source: connectingNodeId.current, target: id }),
+          eds.concat({ id, source: connectingNodeId.current, target: id, edge_type: "default" }),
         );
 
       }
@@ -244,7 +223,8 @@ const ReactFlowComponent = (props) => {
                 onMoveStart={onMoveStart}
                 zoomOnDoubleClick={props.args['allowZoom']}
                 zoomOnScroll={props.args['allowZoom']}
-                zoomOnPinch={props.args['allowZoom']}>
+                zoomOnPinch={props.args['allowZoom']}
+                proOptions={{ hideAttribution: true }}>
                 <Background/>
                 {paneContextMenu && <PaneConextMenu paneContextMenu={paneContextMenu} setPaneContextMenu={setPaneContextMenu} nodes={nodes} edges={edges} setNodes={setNodes} layoutOptions={props.args['layoutOptions']} theme={props.theme}/>}
                 {nodeContextMenu && <NodeContextMenu nodeContextMenu={nodeContextMenu} setNodeContextMenu={setNodeContextMenu} setNodes={setNodes} theme={props.theme} edges={edges}/>}

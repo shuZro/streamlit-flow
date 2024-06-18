@@ -21,6 +21,14 @@ const EditNodeModal = ({show, node, handleClose, theme, setNodeContextMenu, setM
         setEditedNode((editedNode) => ({...editedNode, data: {...editedNode.data, label: e.target.value}}));
     };
 
+    const onNodeImageChange = (e) => {
+        setEditedNode((editedNode) => ({
+            ...editedNode,
+            data: {...editedNode.data, image: e.target.value},
+            style: {"backgroundImage": e.target.value, "backgroundRepeat": "no-repeat", "width": 700, "height": 700}
+        }));
+    };
+
     const onNodeTypeChange = (e) => {
         setEditedNode((editedNode) => ({...editedNode, type: e.target.value}));
     };
@@ -54,24 +62,29 @@ const EditNodeModal = ({show, node, handleClose, theme, setNodeContextMenu, setM
     return (
     <Modal show={show} onHide={handleClose} data-bs-theme={theme} onExited={onExited}>
         <Modal.Header closeButton>
-            <Modal.Title>Edit Node</Modal.Title>
+            <Modal.Title>Edit Task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Row className='g-2'>
                 <Col md>
-                    <FloatingLabel controlId="floatingInput" label="Node Name">
+                    <FloatingLabel controlId="floatingInput" label="Task Name">
                         <Form.Control type="text" placeholder="nodeName" value={editedNode.data.label} autoFocus onChange={onNodeNameChange}/>
                     </FloatingLabel>
                 </Col>
-                <Col md>
-                    <FloatingLabel controlId="floatingSelect" label="Node Type" onChange={onNodeTypeChange}>
-                        <Form.Select defaultValue={editedNode.type} disabled={!allowTypeChange}>
-                            <option value="default">Default</option>
-                            <option value="input">Input</option>
-                            <option value="output">Output</option>
-                        </Form.Select>
-                    </FloatingLabel>
-                </Col>
+                {/* <Col md>*/}
+                {/*    <FloatingLabel controlId="floatingInput" label="Image">*/}
+                {/*        <Form.Control type="text" placeholder="taskImage" value={editedNode.data.image} autoFocus onChange={onNodeImageChange}/>*/}
+                {/*    </FloatingLabel>*/}
+                {/*</Col>*/}
+                {/*<Col md>*/}
+                {/*    <FloatingLabel controlId="floatingSelect" label="Node Type" onChange={onNodeTypeChange}>*/}
+                {/*        <Form.Select defaultValue={editedNode.type} disabled={!allowTypeChange}>*/}
+                {/*            <option value="default">Default</option>*/}
+                {/*            <option value="input">Input</option>*/}
+                {/*            <option value="output">Output</option>*/}
+                {/*        </Form.Select>*/}
+                {/*    </FloatingLabel>*/}
+                {/*</Col>*/}
             </Row>
             <Row className="g-2 mt-1 mt-md-0">
                 <Col md>
@@ -95,17 +108,17 @@ const EditNodeModal = ({show, node, handleClose, theme, setNodeContextMenu, setM
                     </FloatingLabel>
                 </Col>
             </Row>
-            <Row className="g-2 mt-2">
-                <Col md>
-                    <Form.Check type="switch" id="node-draggable-switch" label="Draggable" defaultChecked={editedNode.draggable} onChange={onNodeDraggableChange}/>
-                </Col>
-                <Col md>
-                    <Form.Check type="switch" id="node-connectable-switch" label="Connectable" defaultChecked={editedNode.connectable} onChange={onNodeConnectableChange}/>
-                </Col>
-                <Col md>
-                    <Form.Check type="switch" id="node-deletable-switch" label="Deletable" defaultChecked={editedNode.deletable} onChange={onNodeDeletableChange}/>
-                </Col>
-            </Row>
+            {/*<Row className="g-2 mt-2">*/}
+            {/*    <Col md>*/}
+            {/*        <Form.Check type="switch" id="node-draggable-switch" label="Draggable" defaultChecked={editedNode.draggable} onChange={onNodeDraggableChange}/>*/}
+            {/*    </Col>*/}
+            {/*    <Col md>*/}
+            {/*        <Form.Check type="switch" id="node-connectable-switch" label="Connectable" defaultChecked={editedNode.connectable} onChange={onNodeConnectableChange}/>*/}
+            {/*    </Col>*/}
+            {/*    <Col md>*/}
+            {/*        <Form.Check type="switch" id="node-deletable-switch" label="Deletable" defaultChecked={editedNode.deletable} onChange={onNodeDeletableChange}/>*/}
+            {/*    </Col>*/}
+            {/*</Row>*/}
         </Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -151,8 +164,8 @@ const NodeContextMenu = ({nodeContextMenu, setNodeContextMenu, setNodes, theme, 
                             borderRadius: '8px',
                             zIndex: 10}}>
                 {(!showModal && !modalClosing) && <ButtonGroup vertical>
-                    <Button variant="outline-primary" onClick={handleEditNode}><i className="bi bi-tools"></i> Edit Node</Button>
-                    <Button variant={nodeContextMenu.node.deletable ? "outline-danger" : "secondary"} onClick={handleDeleteNode} disabled={!nodeContextMenu.node.deletable}><i className="bi bi-trash3"></i> Delete Node</Button>
+                    <Button variant="outline-primary" onClick={handleEditNode}><i className="bi bi-tools"></i> Edit Task</Button>
+                    <Button variant={nodeContextMenu.node.deletable ? "outline-danger" : "secondary"} onClick={handleDeleteNode} disabled={!nodeContextMenu.node.deletable}><i className="bi bi-trash3"></i> Delete Task</Button>
                 </ButtonGroup>}
             </div>
             <EditNodeModal show={showModal}

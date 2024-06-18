@@ -70,9 +70,9 @@ const EditEdgeModal = ({show, edge, handleClose, theme, setEdgeContextMenu, setM
                     <Col md>
                         <Form.Check type="switch" id="edgeAnimated" label="Animated" defaultChecked={editedEdge.animated} onChange={onEdgeAnimatedChange}/>
                     </Col>
-                    <Col md>
-                        <Form.Check type="switch" id="edgeDeletable" label="Deletable" defaultChecked={editedEdge.deletable} onChange={onEdgeDeletableChange}/>
-                    </Col>
+                    {/*<Col md>*/}
+                    {/*    <Form.Check type="switch" id="edgeDeletable" label="Deletable" defaultChecked={editedEdge.deletable} onChange={onEdgeDeletableChange}/>*/}
+                    {/*</Col>*/}
                     <Col md>
                         <Form.Check type="switch" id="edgeLabelShowBg" label="Label BG" defaultChecked={editedEdge.labelShowBg} onChange={onEdgeLabelShowBgChange}/>
                     </Col>
@@ -121,7 +121,7 @@ const EdgeContextMenu = ({edgeContextMenu, setEdgeContextMenu, setEdges, theme})
                         zIndex: 10}}>
             {(!showModal && !modalClosing) && <ButtonGroup vertical>
                 <Button variant="outline-primary" onClick={handleEditEdge}><i className="bi bi-tools"></i> Edit Edge</Button>
-                <Button variant={edgeContextMenu.edge.deletable ? "outline-danger" : "secondary"} onClick={handleDeleteEdge} disabled={!edgeContextMenu.edge.deletable}><i className="bi bi-trash3"></i> Delete Edge</Button>
+                {/*<Button variant={edgeContextMenu.edge.deletable ? "outline-danger" : "secondary"} onClick={handleDeleteEdge} disabled={!edgeContextMenu.edge.deletable}><i className="bi bi-trash3"></i> Delete Edge</Button>*/}
             </ButtonGroup>}
         </div>
         <EditEdgeModal show={showModal}

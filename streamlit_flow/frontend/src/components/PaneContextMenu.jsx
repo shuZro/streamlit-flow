@@ -159,17 +159,23 @@ const PaneConextMenu = ({paneContextMenu, setPaneContextMenu, nodes, edges, layo
     };
     const handleShow = () => setShowModal(true);
 
-    const handleAddNode = (e) => {
-        handleShow();
+    const handleAddStartNode = (e) => {
+        setNodes((nodes) => [...nodes, {
+            id: `Task_${nodes.length + 1}`,
+            type: "input",
+            position: paneContextMenu.clickPos,
+            data: {label: "Task"},
+            sourcePosition: "right",
+            targetPosition: "left",
+            draggable: true,
+            connectable: true,
+            deletable: true
+        }]);
+        setPaneContextMenu(null);
     };
 
-    const handleLayoutReset = (e) => {
-        setPaneContextMenu(null);
-        createElkGraphLayout(nodes, edges, layoutOptions)
-            .then(({nodes, edges}) => {
-                setNodes(nodes);
-            })
-            .catch(err => console.log(err));
+     const handleAddNode = (e) => {
+        handleShow();
     };
 
     return (
@@ -183,8 +189,8 @@ const PaneConextMenu = ({paneContextMenu, setPaneContextMenu, nodes, edges, layo
                         borderRadius: '8px',
                         zIndex: 10}}>
             {(!showModal && !modalClosing) && <ButtonGroup vertical>
-                <Button variant="outline-primary" onClick={handleAddNode}><i className='bi bi-pencil'></i> Create New Node</Button>
-                <Button variant="outline-success" onClick={handleLayoutReset}><i className='bi bi-arrow-clockwise'></i> Reset Layout</Button>
+                <Button variant="outline-primary" onClick={handleAddStartNode}><i className='bi bi-plus'></i> Create Task</Button>
+                {/*<Button variant="outline-success" onClick={handleLayoutReset}><i className='bi bi-arrow-clockwise'></i> Reset Layout</Button>*/}
             </ButtonGroup>}
         </div>
         <CreateNodeModal show={showModal} 
